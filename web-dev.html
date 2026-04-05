@@ -1,270 +1,1195 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Web Development Module</title>
-<link rel="stylesheet" href="style.css">
-</head>
+<title>Web Development Module — Digital Fab Lab</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Mono:ital@0;1&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
+  :root {
+    --bg: #0a0a0f;
+    --bg2: #11111a;
+    --bg3: #181824;
+    --accent: #7c6cfc;
+    --accent2: #c084fc;
+    --lime: #a3e635;
+    --cyan: #22d3ee;
+    --text: #f0eeff;
+    --muted: #9191aa;
+    --border: rgba(124,108,252,0.18);
+    --card-bg: rgba(20,20,35,0.85);
+    --glow: rgba(124,108,252,0.22);
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Animated background grid */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(124,108,252,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(124,108,252,0.04) 1px, transparent 1px);
+    background-size: 48px 48px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* Radial glow orb */
+  body::after {
+    content: '';
+    position: fixed;
+    top: -20%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80vw;
+    height: 80vw;
+    background: radial-gradient(ellipse, rgba(124,108,252,0.12) 0%, transparent 60%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* NAV */
+  nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 2.5rem;
+    background: rgba(10,10,15,0.75);
+    backdrop-filter: blur(18px);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .logo {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 1.2rem;
+    letter-spacing: -0.02em;
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  nav a {
+    font-size: 0.85rem;
+    color: var(--muted);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    transition: color 0.2s;
+  }
+  nav a:hover { color: var(--text); }
+
+  /* HERO */
+  .hero {
+    position: relative;
+    z-index: 1;
+    padding: 6rem 2.5rem 4rem;
+    max-width: 1100px;
+    margin: 0 auto;
+    text-align: center;
+  }
+
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: rgba(124,108,252,0.12);
+    border: 1px solid rgba(124,108,252,0.3);
+    border-radius: 999px;
+    padding: 0.35rem 1rem;
+    font-size: 0.75rem;
+    font-family: 'DM Mono', monospace;
+    color: var(--accent2);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin-bottom: 1.8rem;
+    animation: fadeDown 0.6s ease both;
+  }
+
+  .hero-badge::before {
+    content: '';
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    background: var(--lime);
+    box-shadow: 0 0 8px var(--lime);
+    animation: pulse 2s infinite;
+  }
+
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
+
+  h1 {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(3rem, 8vw, 6rem);
+    font-weight: 800;
+    line-height: 1.0;
+    letter-spacing: -0.04em;
+    margin-bottom: 1.2rem;
+    animation: fadeDown 0.6s 0.1s ease both;
+  }
+
+  h1 span {
+    background: linear-gradient(135deg, var(--accent) 0%, var(--accent2) 50%, var(--cyan) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .hero-sub {
+    font-size: 1.1rem;
+    color: var(--muted);
+    max-width: 500px;
+    margin: 0 auto 3rem;
+    line-height: 1.7;
+    animation: fadeDown 0.6s 0.2s ease both;
+  }
+
+  /* STATS */
+  .stats {
+    display: flex;
+    justify-content: center;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+    animation: fadeDown 0.6s 0.3s ease both;
+  }
+
+  .stat-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 1.5rem 2.2rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.3s, border-color 0.3s;
+  }
+
+  .stat-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, var(--glow), transparent);
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+
+  .stat-card:hover { transform: translateY(-4px); border-color: rgba(124,108,252,0.5); }
+  .stat-card:hover::before { opacity: 1; }
+
+  .stat-card h2 {
+    font-family: 'Syne', sans-serif;
+    font-size: 2.8rem;
+    font-weight: 800;
+    background: linear-gradient(135deg, var(--accent), var(--cyan));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    line-height: 1;
+  }
+
+  .stat-card p {
+    font-size: 0.8rem;
+    color: var(--muted);
+    font-family: 'DM Mono', monospace;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-top: 0.3rem;
+  }
+
+  /* PROGRESS BAR */
+  .progress-section {
+    position: relative;
+    z-index: 1;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 2.5rem 2rem;
+    animation: fadeDown 0.6s 0.35s ease both;
+  }
+
+  .progress-bar-wrap {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    padding: 5px;
+    margin-bottom: 0.6rem;
+  }
+
+  .progress-bar-fill {
+    height: 8px;
+    border-radius: 999px;
+    background: linear-gradient(90deg, var(--accent), var(--accent2), var(--cyan));
+    width: 0%;
+    transition: width 1.2s cubic-bezier(0.4,0,0.2,1);
+    position: relative;
+  }
+
+  .progress-bar-fill::after {
+    content: '';
+    position: absolute;
+    right: -2px; top: 50%;
+    transform: translateY(-50%);
+    width: 14px; height: 14px;
+    border-radius: 50%;
+    background: var(--cyan);
+    box-shadow: 0 0 12px var(--cyan);
+  }
+
+  .progress-meta {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.78rem;
+    font-family: 'DM Mono', monospace;
+    color: var(--muted);
+  }
+
+  /* FILTER TABS */
+  .filter-wrap {
+    position: relative;
+    z-index: 1;
+    max-width: 1100px;
+    margin: 0 auto 2.5rem;
+    padding: 0 2.5rem;
+    display: flex;
+    gap: 0.6rem;
+    flex-wrap: wrap;
+    animation: fadeDown 0.6s 0.4s ease both;
+  }
+
+  .filter-btn {
+    background: transparent;
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    padding: 0.4rem 1.1rem;
+    font-size: 0.78rem;
+    font-family: 'DM Mono', monospace;
+    color: var(--muted);
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .filter-btn:hover, .filter-btn.active {
+    background: rgba(124,108,252,0.15);
+    border-color: var(--accent);
+    color: var(--accent2);
+  }
+
+  /* SECTION TITLE */
+  .section-label {
+    position: relative;
+    z-index: 1;
+    max-width: 1100px;
+    margin: 0 auto 2rem;
+    padding: 0 2.5rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    animation: fadeDown 0.6s 0.35s ease both;
+  }
+
+  .section-label h2 {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.4rem;
+    font-weight: 700;
+  }
+
+  .section-label .line {
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, var(--border), transparent);
+  }
+
+  /* GRID */
+  .grid {
+    position: relative;
+    z-index: 1;
+    max-width: 1100px;
+    margin: 0 auto 6rem;
+    padding: 0 2.5rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.2rem;
+  }
+
+  /* DAY CARD */
+  .day-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: transform 0.3s, border-color 0.3s, box-shadow 0.3s;
+    animation: fadeUp 0.5s ease both;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .day-card:hover {
+    transform: translateY(-6px);
+    border-color: var(--accent);
+    box-shadow: 0 0 32px rgba(124,108,252,0.15);
+  }
+
+  .day-card .card-top {
+    position: relative;
+    background: var(--bg3);
+    aspect-ratio: 16/9;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .day-card .card-top img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.4s;
+    opacity: 0.85;
+  }
+
+  .day-card:hover .card-top img { transform: scale(1.05); opacity: 1; }
+
+  .day-num {
+    position: absolute;
+    top: 12px; left: 14px;
+    background: rgba(10,10,15,0.8);
+    backdrop-filter: blur(8px);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 3px 10px;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--accent2);
+    letter-spacing: 0.06em;
+  }
+
+  .day-card .tag {
+    position: absolute;
+    top: 12px; right: 14px;
+    padding: 3px 9px;
+    border-radius: 999px;
+    font-size: 0.65rem;
+    font-family: 'DM Mono', monospace;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+
+  .tag-html { background: rgba(239,120,55,0.18); color: #f97316; border: 1px solid rgba(249,115,22,0.25); }
+  .tag-css  { background: rgba(34,211,238,0.12); color: var(--cyan); border: 1px solid rgba(34,211,238,0.25); }
+  .tag-js   { background: rgba(163,230,53,0.12); color: var(--lime); border: 1px solid rgba(163,230,53,0.25); }
+  .tag-git  { background: rgba(192,132,252,0.12); color: var(--accent2); border: 1px solid rgba(192,132,252,0.25); }
+
+  .card-placeholder {
+    width: 100%; height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.8rem;
+    color: var(--muted);
+    background: var(--bg3);
+  }
+
+  /* Shimmer overlay on card hover */
+  .day-card .card-top::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(124,108,252,0.12), transparent);
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+  .day-card:hover .card-top::after { opacity: 1; }
+
+  .card-body {
+    padding: 1.1rem 1.2rem 1.3rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    flex: 1;
+  }
+
+  .card-body h4 {
+    font-family: 'Syne', sans-serif;
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--text);
+  }
+
+  .card-body p {
+    font-size: 0.85rem;
+    color: var(--muted);
+    line-height: 1.5;
+    flex: 1;
+  }
+
+  .card-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 0.4rem;
+  }
+
+  .view-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.45rem 1rem;
+    background: rgba(124,108,252,0.1);
+    border: 1px solid rgba(124,108,252,0.25);
+    border-radius: 999px;
+    font-size: 0.75rem;
+    font-family: 'DM Mono', monospace;
+    color: var(--accent2);
+    text-decoration: none;
+    cursor: pointer;
+    transition: all 0.2s;
+    letter-spacing: 0.03em;
+  }
+
+  .view-btn:hover {
+    background: rgba(124,108,252,0.22);
+    border-color: var(--accent);
+    transform: scale(1.03);
+  }
+
+  .view-btn svg {
+    width: 12px; height: 12px;
+    stroke: currentColor;
+    stroke-width: 2;
+    fill: none;
+  }
+
+  .status-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--lime);
+    box-shadow: 0 0 8px var(--lime);
+  }
+
+  /* POPUP OVERLAY */
+  .popup-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(5,5,10,0.88);
+    backdrop-filter: blur(10px);
+    z-index: 999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1.5rem;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s;
+  }
+
+  .popup-overlay.open {
+    opacity: 1;
+    pointer-events: all;
+  }
+
+  .popup-box {
+    background: var(--bg2);
+    border: 1px solid rgba(124,108,252,0.3);
+    border-radius: 24px;
+    width: 100%;
+    max-width: 720px;
+    max-height: 90vh;
+    overflow-y: auto;
+    position: relative;
+    transform: translateY(24px) scale(0.97);
+    transition: transform 0.35s cubic-bezier(0.34,1.56,0.64,1);
+    scrollbar-width: thin;
+    scrollbar-color: var(--accent) transparent;
+  }
+
+  .popup-overlay.open .popup-box {
+    transform: translateY(0) scale(1);
+  }
+
+  .popup-header {
+    position: sticky;
+    top: 0;
+    background: rgba(17,17,26,0.95);
+    backdrop-filter: blur(8px);
+    padding: 1.4rem 1.8rem 1.2rem;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    z-index: 2;
+  }
+
+  .popup-header .popup-day {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--accent2);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 0.2rem;
+  }
+
+  .popup-header h3 {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.3rem;
+    font-weight: 700;
+  }
+
+  .close-btn {
+    width: 38px; height: 38px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid var(--border);
+    color: var(--muted);
+    font-size: 1.3rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+    flex-shrink: 0;
+  }
+
+  .close-btn:hover { background: rgba(124,108,252,0.2); color: var(--text); border-color: var(--accent); }
+
+  .popup-content {
+    padding: 1.8rem;
+  }
+
+  .popup-img-wrap {
+    border-radius: 14px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    margin-bottom: 1.5rem;
+    background: var(--bg3);
+    min-height: 200px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .popup-img-wrap img {
+    width: 100%;
+    display: block;
+  }
+
+  .popup-img-placeholder {
+    padding: 3rem;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.85rem;
+    color: var(--muted);
+    text-align: center;
+  }
+
+  .popup-meta {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.8rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .meta-item {
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 0.9rem 1.1rem;
+  }
+
+  .meta-label {
+    font-size: 0.7rem;
+    font-family: 'DM Mono', monospace;
+    color: var(--muted);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin-bottom: 0.3rem;
+  }
+
+  .meta-value {
+    font-size: 0.92rem;
+    font-weight: 500;
+    color: var(--text);
+  }
+
+  .popup-desc {
+    font-size: 0.9rem;
+    line-height: 1.75;
+    color: var(--muted);
+  }
+
+  .popup-skills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 1rem;
+  }
+
+  .skill-pill {
+    padding: 0.3rem 0.8rem;
+    border-radius: 999px;
+    font-size: 0.72rem;
+    font-family: 'DM Mono', monospace;
+    background: rgba(124,108,252,0.1);
+    border: 1px solid rgba(124,108,252,0.2);
+    color: var(--accent2);
+  }
+
+  .popup-nav {
+    display: flex;
+    gap: 0.7rem;
+    margin-top: 1.5rem;
+  }
+
+  .popup-nav button {
+    flex: 1;
+    padding: 0.7rem;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    background: transparent;
+    color: var(--muted);
+    font-family: 'DM Mono', monospace;
+    font-size: 0.78rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    letter-spacing: 0.04em;
+  }
+
+  .popup-nav button:hover:not(:disabled) {
+    background: rgba(124,108,252,0.12);
+    border-color: var(--accent);
+    color: var(--text);
+  }
+
+  .popup-nav button:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+  }
+
+  /* FOOTER */
+  footer {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    padding: 2rem;
+    border-top: 1px solid var(--border);
+    color: var(--muted);
+    font-size: 0.78rem;
+    font-family: 'DM Mono', monospace;
+  }
+
+  /* ANIMATIONS */
+  @keyframes fadeDown { from { opacity: 0; transform: translateY(-12px); } to { opacity: 1; transform: none; } }
+  @keyframes fadeUp   { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: none; } }
+
+  /* Staggered card animation */
+  .day-card:nth-child(1)  { animation-delay: 0.05s; }
+  .day-card:nth-child(2)  { animation-delay: 0.10s; }
+  .day-card:nth-child(3)  { animation-delay: 0.15s; }
+  .day-card:nth-child(4)  { animation-delay: 0.20s; }
+  .day-card:nth-child(5)  { animation-delay: 0.25s; }
+  .day-card:nth-child(6)  { animation-delay: 0.30s; }
+  .day-card:nth-child(7)  { animation-delay: 0.35s; }
+  .day-card:nth-child(8)  { animation-delay: 0.40s; }
+  .day-card:nth-child(9)  { animation-delay: 0.45s; }
+  .day-card:nth-child(10) { animation-delay: 0.50s; }
+  .day-card:nth-child(11) { animation-delay: 0.55s; }
+
+  /* SCROLLBAR */
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: rgba(124,108,252,0.3); border-radius: 999px; }
+
+  /* Tooltip */
+  [data-tooltip] { position: relative; }
+  [data-tooltip]:hover::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    bottom: calc(100% + 8px);
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 4px 10px;
+    font-size: 0.7rem;
+    font-family: 'DM Mono', monospace;
+    color: var(--text);
+    white-space: nowrap;
+    pointer-events: none;
+    z-index: 200;
+  }
+
+  @media (max-width: 600px) {
+    nav { padding: 0.8rem 1.2rem; }
+    .hero { padding: 4rem 1.2rem 3rem; }
+    .grid { padding: 0 1.2rem; }
+    .filter-wrap, .section-label, .progress-section { padding: 0 1.2rem; }
+    .popup-meta { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
 <body>
 
 <nav>
-<h2 class="logo">Digital Fab Lab</h2>
-<a href="index.html">← Back to Portfolio</a>
+  <div class="logo">Digital Fab Lab</div>
+  <a href="index.html">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+    Back to Portfolio
+  </a>
 </nav>
 
-<section class="module-hero">
-
-<h1>Web Development</h1>
-
-<p>
-During this module I learned HTML, CSS and JavaScript fundamentals.
-</p>
-
-<div class="stats">
-<div><h2>11</h2><p>Days</p></div>
-<div><h2>3</h2><p>Technologies</p></div>
-<div><h2>11</h2><p>Assignments</p></div>
-</div>
-
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-badge">Module Complete</div>
+  <h1>Web<br><span>Development</span></h1>
+  <p class="hero-sub">An 11-day deep dive into HTML, CSS & JavaScript fundamentals at Digital Fab Lab.</p>
+  <div class="stats">
+    <div class="stat-card" data-tooltip="Duration of module">
+      <h2>11</h2><p>Days</p>
+    </div>
+    <div class="stat-card" data-tooltip="HTML · CSS · JavaScript">
+      <h2>3</h2><p>Technologies</p>
+    </div>
+    <div class="stat-card" data-tooltip="Completed assignments">
+      <h2>11</h2><p>Assignments</p>
+    </div>
+    <div class="stat-card" data-tooltip="Skills acquired">
+      <h2>100%</h2><p>Completion</p>
+    </div>
+  </div>
 </section>
 
-<section class="progress">
-
-<h2>My Learning Journey</h2>
-
-<div class="grid">
-
-<!-- DAY 1 -->
-<div class="day-card">
-<h4>Day 1</h4>
-<img src="images/day1.png">
-<p>Introduction to Web Dev</p>
-<a href="#popup1" class="btn-assignment">View Assignment</a>
+<!-- PROGRESS -->
+<div class="progress-section">
+  <div class="progress-bar-wrap">
+    <div class="progress-bar-fill" id="prog-bar"></div>
+  </div>
+  <div class="progress-meta">
+    <span>Module progress</span>
+    <span id="prog-label">0 / 11</span>
+  </div>
 </div>
 
-<!-- DAY 2 -->
-<div class="day-card">
-<h4>Day 2</h4>
-<img src="images/day2.png">
-<p>HTML Multimedia</p>
-<a href="#popup2" class="btn-assignment">View Assignment</a>
+<!-- FILTER -->
+<div class="filter-wrap">
+  <button class="filter-btn active" data-filter="all">All Days</button>
+  <button class="filter-btn" data-filter="html">HTML</button>
+  <button class="filter-btn" data-filter="css">CSS</button>
+  <button class="filter-btn" data-filter="js">JavaScript</button>
+  <button class="filter-btn" data-filter="git">Git</button>
 </div>
 
-<!-- DAY 3 -->
-<div class="day-card">
-<h4>Day 3</h4>
-<img src="images/day3.png">
-<p>HTML Tables</p>
-<a href="#popup3" class="btn-assignment">View Assignment</a>
+<!-- SECTION LABEL -->
+<div class="section-label">
+  <h2>Learning Journey</h2>
+  <div class="line"></div>
 </div>
 
-<div class="day-card">
-<h4>Day 4</h4>
-<img src="images/day4.png">
-<p>HTML Forms</p>
-<a href="#popup4" class="btn-assignment">View Assignment</a>
+<!-- GRID -->
+<div class="grid" id="card-grid">
+
+  <div class="day-card" data-filter="html" data-day="1">
+    <div class="card-top">
+      <img src="images/day1.png" alt="Day 1" onerror="this.style.display='none';this.parentElement.querySelector('.card-placeholder').style.display='flex'">
+      <div class="card-placeholder" style="display:none;">day1.png</div>
+      <div class="day-num">Day 01</div>
+      <span class="tag tag-html">HTML</span>
+    </div>
+    <div class="card-body">
+      <h4>Introduction to Web Dev</h4>
+      <p>First steps into web development — understanding how browsers read HTML and building the first webpage.</p>
+      <div class="card-footer">
+        <button class="view-btn" onclick="openPopup(0)">
+          View Assignment
+          <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+        </button>
+        <div class="status-dot"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="day-card" data-filter="html" data-day="2">
+    <div class="card-top">
+      <img src="images/day2.png" alt="Day 2" onerror="this.style.display='none';this.parentElement.querySelector('.card-placeholder').style.display='flex'">
+      <div class="card-placeholder" style="display:none;">day2.png</div>
+      <div class="day-num">Day 02</div>
+      <span class="tag tag-html">HTML</span>
+    </div>
+    <div class="card-body">
+      <h4>HTML Multimedia</h4>
+      <p>Embedding images, audio and video into web pages using semantic HTML5 media elements.</p>
+      <div class="card-footer">
+        <button class="view-btn" onclick="openPopup(1)">
+          View Assignment
+          <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+        </button>
+        <div class="status-dot"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="day-card" data-filter="html" data-day="3">
+    <div class="card-top">
+      <img src="images/day3.png" alt="Day 3" onerror="this.style.display='none';this.parentElement.querySelector('.card-placeholder').style.display='flex'">
+      <div class="card-placeholder" style="display:none;">day3.png</div>
+      <div class="day-num">Day 03</div>
+      <span class="tag tag-html">HTML</span>
+    </div>
+    <div class="card-body">
+      <h4>HTML Tables</h4>
+      <p>Structuring tabular data with &lt;table&gt;, &lt;thead&gt;, &lt;tbody&gt; and accessible table markup.</p>
+      <div class="card-footer">
+        <button class="view-btn" onclick="openPopup(2)">
+          View Assignment
+          <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+        </button>
+        <div class="status-dot"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="day-card" data-filter="html" data-day="4">
+    <div class="card-top">
+      <img src="images/day4.png" alt="Day 4" onerror="this.style.display='none';this.parentElement.querySelector('.card-placeholder').style.display='flex'">
+      <div class="card-placeholder" style="display:none;">day4.png</div>
+      <div class="day-num">Day 04</div>
+      <span class="tag tag-html">HTML</span>
+    </div>
+    <div class="card-body">
+      <h4>HTML Forms</h4>
+      <p>Building interactive forms with inputs, labels, validation and accessible form design patterns.</p>
+      <div class="card-footer">
+        <button class="view-btn" onclick="openPopup(3)">
+          View Assignment
+          <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+        </button>
+        <div class="status-dot"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="day-card" data-filter="css" data-day="5">
+    <div class="card-top">
+      <img src="images/day5.png" alt="Day 5" onerror="this.style.display='none';this.parentElement.querySelector('.card-placeholder').style.display='flex'">
+      <div class="card-placeholder" style="display:none;">day5.png</div>
+      <div class="day-num">Day 05</div>
+      <span class="tag tag-css">CSS</span>
+    </div>
+    <div class="card-body">
+      <h4>Introduction to CSS</h4>
+      <p>Styling with CSS: colors, fonts, backgrounds, text properties and the cascade.</p>
+      <div class="card-footer">
+        <button class="view-btn" onclick="openPopup(4)">
+          View Assignment
+          <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+        </button>
+        <div class="status-dot"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="day-card" data-filter="css" data-day="6">
+    <div class="card-top">
+      <img src="images/day6.png" alt="Day 6" onerror="this.style.display='none';this.parentElement.querySelector('.card-placeholder').style.display='flex'">
+      <div class="card-placeholder" style="display:none;">day6.png</div>
+      <div class="day-num">Day 06</div>
+      <span class="tag tag-css">CSS</span>
+    </div>
+    <div class="card-body">
+      <h4>CSS Selectors</h4>
+      <p>Mastering class, ID, pseudo-class and combinator selectors for precise element targeting.</p>
+      <div class="card-footer">
+        <button class="view-btn" onclick="openPopup(5)">
+          View Assignment
+          <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+        </button>
+        <div class="status-dot"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="day-card" data-filter="css" data-day="7">
+    <div class="card-top">
+      <img src="images/day7.png" alt="Day 7" onerror="this.style.display='none';this.parentElement.querySelector('.card-placeholder').style.display='flex'">
+      <div class="card-placeholder" style="display:none;">day7.png</div>
+      <div class="day-num">Day 07</div>
+      <span class="tag tag-css">CSS</span>
+    </div>
+    <div class="card-body">
+      <h4>CSS Box Model</h4>
+      <p>Understanding margin, padding, border and how the browser calculates element dimensions.</p>
+      <div class="card-footer">
+        <button class="view-btn" onclick="openPopup(6)">
+          View Assignment
+          <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+        </button>
+        <div class="status-dot"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="day-card" data-filter="css" data-day="8">
+    <div class="card-top">
+      <img src="images/day8.png" alt="Day 8" onerror="this.style.display='none';this.parentElement.querySelector('.card-placeholder').style.display='flex'">
+      <div class="card-placeholder" style="display:none;">day8.png</div>
+      <div class="day-num">Day 08</div>
+      <span class="tag tag-css">CSS</span>
+    </div>
+    <div class="card-body">
+      <h4>Flexbox</h4>
+      <p>Building responsive layouts with CSS Flexbox — aligning, wrapping and distributing items.</p>
+      <div class="card-footer">
+        <button class="view-btn" onclick="openPopup(7)">
+          View Assignment
+          <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+        </button>
+        <div class="status-dot"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="day-card" data-filter="js" data-day="9">
+    <div class="card-top">
+      <img src="images/day9.png" alt="Day 9" onerror="this.style.display='none';this.parentElement.querySelector('.card-placeholder').style.display='flex'">
+      <div class="card-placeholder" style="display:none;">day9.png</div>
+      <div class="day-num">Day 09</div>
+      <span class="tag tag-js">JS</span>
+    </div>
+    <div class="card-body">
+      <h4>Flexbox + JavaScript</h4>
+      <p>Flexbox revision combined with first JavaScript — variables, functions and the browser console.</p>
+      <div class="card-footer">
+        <button class="view-btn" onclick="openPopup(8)">
+          View Assignment
+          <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+        </button>
+        <div class="status-dot"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="day-card" data-filter="git" data-day="10">
+    <div class="card-top">
+      <img src="images/day10.png" alt="Day 10" onerror="this.style.display='none';this.parentElement.querySelector('.card-placeholder').style.display='flex'">
+      <div class="card-placeholder" style="display:none;">day10.png</div>
+      <div class="day-num">Day 10</div>
+      <span class="tag tag-git">Git</span>
+    </div>
+    <div class="card-body">
+      <h4>GitHub</h4>
+      <p>Version control with Git — commits, branches, pull requests and publishing sites on GitHub Pages.</p>
+      <div class="card-footer">
+        <button class="view-btn" onclick="openPopup(9)">
+          View Assignment
+          <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+        </button>
+        <div class="status-dot"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="day-card" data-filter="js" data-day="11">
+    <div class="card-top">
+      <img src="images/day11.png" alt="Day 11" onerror="this.style.display='none';this.parentElement.querySelector('.card-placeholder').style.display='flex'">
+      <div class="card-placeholder" style="display:none;">day11.png</div>
+      <div class="day-num">Day 11</div>
+      <span class="tag tag-js">JS</span>
+    </div>
+    <div class="card-body">
+      <h4>JavaScript DOM</h4>
+      <p>Manipulating the Document Object Model — querying elements, events and dynamic content updates.</p>
+      <div class="card-footer">
+        <button class="view-btn" onclick="openPopup(10)">
+          View Assignment
+          <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+        </button>
+        <div class="status-dot"></div>
+      </div>
+    </div>
+  </div>
+
 </div>
 
-<div class="day-card">
-<h4>Day 5 </h4>
-<img src="images/day5.png">
-<p>Introduction to CSS</p>
-<a href="#popup5" class="btn-assignment">View Assignment</a>
+<!-- POPUP OVERLAY -->
+<div class="popup-overlay" id="popup-overlay" onclick="handleOverlayClick(event)">
+  <div class="popup-box" id="popup-box">
+    <div class="popup-header">
+      <div>
+        <div class="popup-day" id="p-day">Day 01</div>
+        <h3 id="p-title">Assignment</h3>
+      </div>
+      <button class="close-btn" onclick="closePopup()">×</button>
+    </div>
+    <div class="popup-content">
+      <div class="popup-img-wrap" id="p-img-wrap">
+        <div class="popup-img-placeholder" id="p-placeholder">Add your assignment image to images/ folder</div>
+        <img id="p-img" src="" alt="Assignment" style="display:none">
+      </div>
+      <div class="popup-meta">
+        <div class="meta-item">
+          <div class="meta-label">Technology</div>
+          <div class="meta-value" id="p-tech">—</div>
+        </div>
+        <div class="meta-item">
+          <div class="meta-label">Status</div>
+          <div class="meta-value" style="color:#a3e635;">✓ Completed</div>
+        </div>
+      </div>
+      <p class="popup-desc" id="p-desc">Assignment description goes here.</p>
+      <div class="popup-skills" id="p-skills"></div>
+      <div class="popup-nav">
+        <button id="btn-prev" onclick="navPopup(-1)">← Previous Day</button>
+        <button id="btn-next" onclick="navPopup(1)">Next Day →</button>
+      </div>
+    </div>
+  </div>
 </div>
 
-<div class="day-card">
-<h4>Day 6</h4>
-<img src="images/day6.png">
-<p>CSS Selectors</p>
-<a href="#popup6" class="btn-assignment">View Assignment</a>
-</div>
-
-<div class="day-card">
-<h4>Day 7</h4>
-<img src="images/day7.png">
-<p>CSS Box Model</p>
-<a href="#popup7" class="btn-assignment">View Assignment</a>
-</div>
-
-
-<div class="day-card">
-<h4>Day 8</h4>
-<img src="images/day8.png">
-<p>Flex Box</p>
-<a href="#popup8" class="btn-assignment">View Assignment</a>
-</div>
-
-<div class="day-card">
-<h4>Day 9</h4>
-<img src="images/day9.png">
-<p>Flex Box Revision + JavaScript</p>
-<a href="#popup9" class="btn-assignment">View Assignment</a>
-</div>
-
-
-<div class="day-card">
-<h4>Day 10</h4>
-<img src="images/day10.png">
-<p>Git Hub</p>
-<a href="#popup10" class="btn-assignment">View Assignment</a>
-</div>
-
-<div class="day-card">
-<h4>Day 11</h4>
-<img src="images/day11.png">
-<p>
-JavaScript DOM</p>
-<a href="#popup11" class="btn-assignment">View Assignment</a>
-</div>
-
-</section>
-<!-- day1 -->
-  <div id="popup1" class="popup">
-
-<div class="popup-box">
-
-<a href="#" class="close">×</a>
-
-<h3>Day 1 Assignment</h3>
-
-<img src="images/day1assignment.png" alt="assignment">
-
-</div>
-</div>
-
-<!-- day2 -->
-<div id="popup2" class="popup">
-
-<div class="popup-box">
-
-<a href="#" class="close">×</a>
-
-<h3>Day 2 Assignment</h3>
-
-<img src="images/day2assignment.png" alt="assignment">
-
-</div>
-</div>
-
-<!-- day3 -->
- <div id="popup3" class="popup">
-
-<div class="popup-box">
-
-<a href="#" class="close">×</a>
-
-<h3>Day 3 Assignment</h3>
-
-<img src="images/day3assignment.png" alt="assignment">
-
-</div>
-</div>
-<!-- day4 -->
- <div id="popup4" class="popup">
-
-<div class="popup-box">
-
-<a href="#" class="close">×</a>
-
-<h3>Day 4 Assignment</h3>
-
-<img src="images/day4assignment.png" alt="assignment">
-
-</div>
-</div>
-<!-- day5 -->
- <div id="popup5" class="popup">
-
-<div class="popup-box">
-
-<a href="#" class="close">×</a>
-
-<h3>Day 5 Assignment</h3>
-
-<img src="images/day5assignment.png" alt="assignment">
-
-</div>
-</div>
-<!-- day6-->
- <div id="popup6" class="popup">
-
-<div class="popup-box">
-
-<a href="#" class="close">×</a>
-
-<h3>Day 6 Assignment</h3>
-
-<img src="images/day6assignment.png" alt="assignment">
-
-</div>
-</div>
-<!-- day7 -->
-  <div id="popup7" class="popup">
-
-<div class="popup-box">
-
-<a href="#" class="close">×</a>
-
-<h3>Day 7 Assignment</h3>
-
-<img src="images/day7assignment.png" alt="assignment">
-
-</div>
-</div>
-<!-- day8 -->
-  <div id="popup8" class="popup">
-
-<div class="popup-box">
-
-<a href="#" class="close">×</a>
-
-<h3>Day 8 Assignment</h3>
-
-<img src="images/day8assignment.png" alt="assignment">
-
-</div>
-</div>
-<!-- day9 -->
-  <div id="popup9" class="popup">
-
-<div class="popup-box">
-
-<a href="#" class="close">×</a>
-
-<h3>Day 9 Assignment</h3>
-
-<img src="images/day9assignment.png" alt="assignment">
-
-</div>
-</div>
-<!-- day10 -->
-  <div id="popup10" class="popup">
-
-<div class="popup-box">
-
-<a href="#" class="close">×</a>
-
-<h3>Day 10 Assignment</h3>
-
-<img src="images/day10assignment.png" alt="assignment">
-
-</div>
-</div>
-<!-- day11 -->
-  <div id="popup11" class="popup">
-
-<div class="popup-box">
-
-<a href="#" class="close">×</a>
-
-<h3>Day 11 Assignment</h3>
-
-<img src="images/day11assignment.png" alt="assignment">
-
-</div>
-</div>
-
+<footer>
+  <span>Digital Fab Lab · Web Development Module · 2024</span>
+</footer>
+
+<script>
+const days = [
+  { day:1, title:'Introduction to Web Dev', tech:'HTML', img:'images/day1assignment.png',
+    desc:'Created a basic HTML webpage from scratch using the essential structure: DOCTYPE, html, head and body tags. Practised writing semantic headings, paragraphs, links and lists.',
+    skills:['DOCTYPE','Semantic HTML','Headings','Paragraphs','Hyperlinks'] },
+
+  { day:2, title:'HTML Multimedia', tech:'HTML', img:'images/day2assignment.png',
+    desc:'Embedded images using the img tag with alt attributes for accessibility, added an audio element and explored the video tag with controls and fallback content.',
+    skills:['img','audio','video','alt text','src attribute'] },
+
+  { day:3, title:'HTML Tables', tech:'HTML', img:'images/day3assignment.png',
+    desc:'Built a data table using table, thead, tbody, tr, th and td elements. Applied colspan and rowspan to merge cells and added a caption for accessibility.',
+    skills:['table','thead / tbody','colspan','rowspan','caption'] },
+
+  { day:4, title:'HTML Forms', tech:'HTML', img:'images/day4assignment.png',
+    desc:'Designed a contact form with various input types: text, email, password, radio, checkbox and select dropdowns. Used label elements and the required attribute for validation.',
+    skills:['input types','label','select','textarea','form validation'] },
+
+  { day:5, title:'Introduction to CSS', tech:'CSS', img:'images/day5assignment.png',
+    desc:'Styled a webpage using an external stylesheet. Explored font-family, color, background-color, text-align and line-height. Learned about the cascade and specificity.',
+    skills:['color','font-family','background','text-align','cascade'] },
+
+  { day:6, title:'CSS Selectors', tech:'CSS', img:'images/day6assignment.png',
+    desc:'Targeted elements precisely using class selectors, ID selectors, pseudo-classes like :hover and :first-child, and combinators such as descendant and adjacent sibling.',
+    skills:[':hover',':first-child','.class','#id','combinators'] },
+
+  { day:7, title:'CSS Box Model', tech:'CSS', img:'images/day7assignment.png',
+    desc:'Visualised how every element is a box: practiced setting width, height, padding, border and margin. Learned the difference between content-box and border-box sizing.',
+    skills:['margin','padding','border','box-sizing','display'] },
+
+  { day:8, title:'Flexbox', tech:'CSS', img:'images/day8assignment.png',
+    desc:'Built a fully responsive layout using Flexbox. Practised flex-direction, justify-content, align-items, flex-wrap and the flex shorthand property on child elements.',
+    skills:['flex-direction','justify-content','align-items','flex-wrap','gap'] },
+
+  { day:9, title:'Flexbox + JavaScript', tech:'JavaScript', img:'images/day9assignment.png',
+    desc:'Revised Flexbox layouts and then wrote first JavaScript: declared variables with let and const, wrote a function, and used console.log to debug output.',
+    skills:['let / const','functions','console.log','typeof','template literals'] },
+
+  { day:10, title:'GitHub', tech:'Git & GitHub', img:'images/day10assignment.png',
+    desc:'Initialised a local Git repo, made commits and pushed code to GitHub. Created a branch, opened a pull request and published the project using GitHub Pages.',
+    skills:['git init','git commit','git push','branches','GitHub Pages'] },
+
+  { day:11, title:'JavaScript DOM', tech:'JavaScript', img:'images/day11assignment.png',
+    desc:'Selected HTML elements using querySelector, changed their text and styles dynamically, and attached click event listeners to make an interactive webpage without page reloads.',
+    skills:['querySelector','textContent','style','addEventListener','innerHTML'] },
+];
+
+let currentIdx = 0;
+
+function openPopup(idx) {
+  currentIdx = idx;
+  renderPopup(idx);
+  document.getElementById('popup-overlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closePopup() {
+  document.getElementById('popup-overlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+function handleOverlayClick(e) {
+  if (e.target === document.getElementById('popup-overlay')) closePopup();
+}
+
+function navPopup(dir) {
+  const next = currentIdx + dir;
+  if (next >= 0 && next < days.length) {
+    currentIdx = next;
+    renderPopup(currentIdx);
+  }
+}
+
+function renderPopup(idx) {
+  const d = days[idx];
+  document.getElementById('p-day').textContent = 'Day ' + String(d.day).padStart(2,'0');
+  document.getElementById('p-title').textContent = d.title;
+  document.getElementById('p-tech').textContent = d.tech;
+  document.getElementById('p-desc').textContent = d.desc;
+
+  const img = document.getElementById('p-img');
+  const ph  = document.getElementById('p-placeholder');
+  img.src = d.img;
+  img.style.display = 'block';
+  ph.style.display  = 'none';
+  img.onerror = () => { img.style.display='none'; ph.style.display='block'; };
+
+  const skillsEl = document.getElementById('p-skills');
+  skillsEl.innerHTML = d.skills.map(s => `<span class="skill-pill">${s}</span>`).join('');
+
+  document.getElementById('btn-prev').disabled = idx === 0;
+  document.getElementById('btn-next').disabled = idx === days.length - 1;
+
+  document.getElementById('popup-box').scrollTop = 0;
+}
+
+// Close on Escape
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') closePopup();
+  if (e.key === 'ArrowLeft')  navPopup(-1);
+  if (e.key === 'ArrowRight') navPopup(1);
+});
+
+// Filter buttons
+document.querySelectorAll('.filter-btn').forEach(btn => {
+  btn.addEventListener('click', function() {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    this.classList.add('active');
+    const f = this.dataset.filter;
+    document.querySelectorAll('.day-card').forEach(card => {
+      if (f === 'all' || card.dataset.filter === f) {
+        card.style.display = '';
+        card.style.animation = 'fadeUp 0.4s ease both';
+      } else {
+        card.style.display = 'none';
+      }
+    });
+  });
+});
+
+// Progress bar animation on load
+window.addEventListener('load', () => {
+  setTimeout(() => {
+    document.getElementById('prog-bar').style.width = '100%';
+    document.getElementById('prog-label').textContent = '11 / 11';
+  }, 600);
+});
+</script>
 </body>
 </html>
