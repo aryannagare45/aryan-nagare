@@ -1,0 +1,1009 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>UI/UX Module — Digital Fab Lab</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Mono:ital@0;1&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #0a0a0f;
+    --bg2: #11111a;
+    --bg3: #181824;
+    --accent: #7c6cfc;
+    --accent2: #c084fc;
+    --lime: #a3e635;
+    --cyan: #22d3ee;
+    --text: #f0eeff;
+    --muted: #9191aa;
+    --border: rgba(124,108,252,0.18);
+    --card-bg: rgba(20,20,35,0.85);
+    --glow: rgba(124,108,252,0.22);
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(124,108,252,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(124,108,252,0.04) 1px, transparent 1px);
+    background-size: 48px 48px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  body::after {
+    content: '';
+    position: fixed;
+    top: -20%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80vw;
+    height: 80vw;
+    background: radial-gradient(ellipse, rgba(124,108,252,0.12) 0%, transparent 60%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 2.5rem;
+    background: rgba(10,10,15,0.75);
+    backdrop-filter: blur(18px);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .logo {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 1.2rem;
+    letter-spacing: -0.02em;
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  nav a {
+    font-size: 0.85rem;
+    color: var(--muted);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    transition: color 0.2s;
+  }
+  nav a:hover { color: var(--text); }
+
+  .hero {
+    position: relative;
+    z-index: 1;
+    padding: 6rem 2.5rem 4rem;
+    max-width: 1100px;
+    margin: 0 auto;
+    text-align: center;
+  }
+
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: rgba(124,108,252,0.12);
+    border: 1px solid rgba(124,108,252,0.3);
+    border-radius: 999px;
+    padding: 0.35rem 1rem;
+    font-size: 0.75rem;
+    font-family: 'DM Mono', monospace;
+    color: var(--accent2);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin-bottom: 1.8rem;
+    animation: fadeDown 0.6s ease both;
+  }
+
+  .hero-badge::before {
+    content: '';
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    background: var(--lime);
+    box-shadow: 0 0 8px var(--lime);
+    animation: pulse 2s infinite;
+  }
+
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
+
+  h1 {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(3rem, 8vw, 6rem);
+    font-weight: 800;
+    line-height: 1.0;
+    letter-spacing: -0.04em;
+    margin-bottom: 1.2rem;
+    animation: fadeDown 0.6s 0.1s ease both;
+  }
+
+  h1 span {
+    background: linear-gradient(135deg, var(--accent) 0%, var(--accent2) 50%, var(--cyan) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .hero-sub {
+    font-size: 1.1rem;
+    color: var(--muted);
+    max-width: 500px;
+    margin: 0 auto 3rem;
+    line-height: 1.7;
+    animation: fadeDown 0.6s 0.2s ease both;
+  }
+
+  .stats {
+    display: flex;
+    justify-content: center;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+    animation: fadeDown 0.6s 0.3s ease both;
+  }
+
+  .stat-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 1.5rem 2.2rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.3s, border-color 0.3s;
+  }
+
+  .stat-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, var(--glow), transparent);
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+
+  .stat-card:hover { transform: translateY(-4px); border-color: rgba(124,108,252,0.5); }
+  .stat-card:hover::before { opacity: 1; }
+
+  .stat-card h2 {
+    font-family: 'Syne', sans-serif;
+    font-size: 2.8rem;
+    font-weight: 800;
+    background: linear-gradient(135deg, var(--accent), var(--cyan));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    line-height: 1;
+  }
+
+  .stat-card p {
+    font-size: 0.8rem;
+    color: var(--muted);
+    font-family: 'DM Mono', monospace;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-top: 0.3rem;
+  }
+
+  .progress-section {
+    position: relative;
+    z-index: 1;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 2.5rem 2rem;
+    animation: fadeDown 0.6s 0.35s ease both;
+  }
+
+  .progress-bar-wrap {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    padding: 5px;
+    margin-bottom: 0.6rem;
+  }
+
+  .progress-bar-fill {
+    height: 8px;
+    border-radius: 999px;
+    background: linear-gradient(90deg, var(--accent), var(--accent2), var(--cyan));
+    width: 0%;
+    transition: width 1.2s cubic-bezier(0.4,0,0.2,1);
+    position: relative;
+  }
+
+  .progress-bar-fill::after {
+    content: '';
+    position: absolute;
+    right: -2px; top: 50%;
+    transform: translateY(-50%);
+    width: 14px; height: 14px;
+    border-radius: 50%;
+    background: var(--cyan);
+    box-shadow: 0 0 12px var(--cyan);
+  }
+
+  .progress-meta {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.78rem;
+    font-family: 'DM Mono', monospace;
+    color: var(--muted);
+  }
+
+  .filter-wrap {
+    position: relative;
+    z-index: 1;
+    max-width: 1100px;
+    margin: 0 auto 2.5rem;
+    padding: 0 2.5rem;
+    display: flex;
+    gap: 0.6rem;
+    flex-wrap: wrap;
+    animation: fadeDown 0.6s 0.4s ease both;
+  }
+
+  .filter-btn {
+    background: transparent;
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    padding: 0.4rem 1.1rem;
+    font-size: 0.78rem;
+    font-family: 'DM Mono', monospace;
+    color: var(--muted);
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .filter-btn:hover, .filter-btn.active {
+    background: rgba(124,108,252,0.15);
+    border-color: var(--accent);
+    color: var(--accent2);
+  }
+
+  .section-label {
+    position: relative;
+    z-index: 1;
+    max-width: 1100px;
+    margin: 0 auto 2rem;
+    padding: 0 2.5rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    animation: fadeDown 0.6s 0.35s ease both;
+  }
+
+  .section-label h2 {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.4rem;
+    font-weight: 700;
+  }
+
+  .section-label .line {
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, var(--border), transparent);
+  }
+
+  .grid {
+    position: relative;
+    z-index: 1;
+    max-width: 1100px;
+    margin: 0 auto 3rem;
+    padding: 0 2.5rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.2rem;
+  }
+
+  /* DAY CARD */
+  .day-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    overflow: hidden;
+    transition: transform 0.3s, border-color 0.3s, box-shadow 0.3s;
+    animation: fadeUp 0.5s ease both;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .day-card:hover {
+    transform: translateY(-6px);
+    border-color: var(--accent);
+    box-shadow: 0 0 32px rgba(124,108,252,0.15);
+  }
+
+  .day-card .card-top {
+    position: relative;
+    background: var(--bg3);
+    aspect-ratio: 16/9;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: zoom-in;
+  }
+
+  .day-card .card-top img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.4s;
+    opacity: 0.85;
+  }
+
+  .day-card:hover .card-top img { transform: scale(1.05); opacity: 1; }
+
+  /* Zoom hint overlay */
+  .card-top .zoom-hint {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(10,10,15,0.45);
+    opacity: 0;
+    transition: opacity 0.25s;
+    pointer-events: none;
+  }
+
+  .card-top:hover .zoom-hint { opacity: 1; }
+
+  .zoom-hint span {
+    background: rgba(124,108,252,0.85);
+    border-radius: 999px;
+    padding: 0.4rem 1rem;
+    font-size: 0.72rem;
+    font-family: 'DM Mono', monospace;
+    color: #fff;
+    letter-spacing: 0.06em;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+
+  .day-num {
+    position: absolute;
+    top: 12px; left: 14px;
+    background: rgba(10,10,15,0.8);
+    backdrop-filter: blur(8px);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 3px 10px;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--accent2);
+    letter-spacing: 0.06em;
+    z-index: 2;
+  }
+
+  .card-placeholder {
+    width: 100%; height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.8rem;
+    color: var(--muted);
+    background: var(--bg3);
+  }
+
+  .day-card .card-top::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(124,108,252,0.12), transparent);
+    opacity: 0;
+    transition: opacity 0.3s;
+    pointer-events: none;
+  }
+  .day-card:hover .card-top::after { opacity: 1; }
+
+  .card-body {
+    padding: 1.1rem 1.2rem 1.3rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    flex: 1;
+  }
+
+  .card-body h4 {
+    font-family: 'Syne', sans-serif;
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--text);
+  }
+
+  .card-body p {
+    font-size: 0.85rem;
+    color: var(--muted);
+    line-height: 1.5;
+  }
+
+  .status-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--lime);
+    box-shadow: 0 0 8px var(--lime);
+    align-self: flex-end;
+    margin-top: auto;
+  }
+
+  /* ── IMAGE LIGHTBOX ── */
+  .lightbox {
+    position: fixed;
+    inset: 0;
+    background: rgba(5,5,10,0.94);
+    backdrop-filter: blur(16px);
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1.5rem;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s;
+  }
+
+  .lightbox.open {
+    opacity: 1;
+    pointer-events: all;
+  }
+
+  .lightbox-inner {
+    position: relative;
+    max-width: 900px;
+    width: 100%;
+    transform: scale(0.92);
+    transition: transform 0.35s cubic-bezier(0.34,1.56,0.64,1);
+  }
+
+  .lightbox.open .lightbox-inner {
+    transform: scale(1);
+  }
+
+  .lightbox-inner img {
+    width: 100%;
+    border-radius: 18px;
+    border: 1px solid rgba(124,108,252,0.3);
+    display: block;
+    box-shadow: 0 0 80px rgba(124,108,252,0.2);
+  }
+
+  .lightbox-caption {
+    text-align: center;
+    margin-top: 1rem;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.78rem;
+    color: var(--muted);
+    letter-spacing: 0.06em;
+  }
+
+  .lightbox-close {
+    position: absolute;
+    top: -16px;
+    right: -16px;
+    width: 40px; height: 40px;
+    border-radius: 50%;
+    background: var(--bg2);
+    border: 1px solid rgba(124,108,252,0.35);
+    color: var(--muted);
+    font-size: 1.3rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+  }
+
+  .lightbox-close:hover {
+    background: rgba(124,108,252,0.25);
+    color: var(--text);
+    border-color: var(--accent);
+  }
+
+  /* ── ASSIGNMENT SECTION ── */
+  .assignment-section {
+    position: relative;
+    z-index: 1;
+    max-width: 1100px;
+    margin: 0 auto 6rem;
+    padding: 0 2.5rem;
+    animation: fadeUp 0.6s 0.5s ease both;
+  }
+
+  .assignment-card {
+    background: var(--card-bg);
+    border: 1px solid rgba(124,108,252,0.35);
+    border-radius: 24px;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .assignment-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--accent), var(--accent2), var(--cyan));
+  }
+
+  .assignment-header {
+    padding: 2rem 2.5rem 1.5rem;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 1.2rem;
+  }
+
+  .assignment-icon {
+    width: 52px; height: 52px;
+    border-radius: 14px;
+    background: linear-gradient(135deg, rgba(124,108,252,0.2), rgba(192,132,252,0.2));
+    border: 1px solid rgba(124,108,252,0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    font-size: 1.5rem;
+  }
+
+  .assignment-header-text h3 {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.4rem;
+    font-weight: 700;
+    margin-bottom: 0.25rem;
+  }
+
+  .assignment-header-text p {
+    font-size: 0.85rem;
+    color: var(--muted);
+  }
+
+  .assignment-body {
+    padding: 2rem 2.5rem 2.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .assignment-desc {
+    font-size: 0.95rem;
+    color: var(--muted);
+    line-height: 1.75;
+    max-width: 680px;
+  }
+
+  .project-link-block {
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+  }
+
+  .project-link-block label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--muted);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .link-row {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    flex-wrap: wrap;
+  }
+
+  .link-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.65rem 1.3rem;
+    border-radius: 12px;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.82rem;
+    font-weight: 500;
+    text-decoration: none;
+    transition: all 0.25s;
+    border: 1px solid;
+    letter-spacing: 0.02em;
+  }
+
+  .link-pill.figma {
+    background: rgba(162,89,255,0.1);
+    border-color: rgba(162,89,255,0.3);
+    color: #c084fc;
+  }
+
+  .link-pill.figma:hover {
+    background: rgba(162,89,255,0.22);
+    border-color: #c084fc;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(162,89,255,0.18);
+  }
+
+  .link-pill.behance {
+    background: rgba(34,211,238,0.08);
+    border-color: rgba(34,211,238,0.25);
+    color: var(--cyan);
+  }
+
+  .link-pill.behance:hover {
+    background: rgba(34,211,238,0.18);
+    border-color: var(--cyan);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(34,211,238,0.15);
+  }
+
+  .link-pill svg {
+    width: 15px; height: 15px;
+    stroke: currentColor;
+    stroke-width: 2;
+    fill: none;
+    flex-shrink: 0;
+  }
+
+  /* Placeholder link styling */
+  .link-pill.placeholder {
+    opacity: 0.45;
+    cursor: default;
+    pointer-events: none;
+    font-style: italic;
+  }
+
+  .assignment-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .a-tag {
+    padding: 0.3rem 0.85rem;
+    border-radius: 999px;
+    font-size: 0.72rem;
+    font-family: 'DM Mono', monospace;
+    background: rgba(124,108,252,0.1);
+    border: 1px solid rgba(124,108,252,0.2);
+    color: var(--accent2);
+  }
+
+  /* Staggered card animation */
+  .day-card:nth-child(1)  { animation-delay: 0.05s; }
+  .day-card:nth-child(2)  { animation-delay: 0.10s; }
+  .day-card:nth-child(3)  { animation-delay: 0.15s; }
+  .day-card:nth-child(4)  { animation-delay: 0.20s; }
+  .day-card:nth-child(5)  { animation-delay: 0.25s; }
+
+  footer {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    padding: 2rem;
+    border-top: 1px solid var(--border);
+    color: var(--muted);
+    font-size: 0.78rem;
+    font-family: 'DM Mono', monospace;
+  }
+
+  @keyframes fadeDown { from { opacity: 0; transform: translateY(-12px); } to { opacity: 1; transform: none; } }
+  @keyframes fadeUp   { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: none; } }
+
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: rgba(124,108,252,0.3); border-radius: 999px; }
+
+  [data-tooltip] { position: relative; }
+  [data-tooltip]:hover::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    bottom: calc(100% + 8px);
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 4px 10px;
+    font-size: 0.7rem;
+    font-family: 'DM Mono', monospace;
+    color: var(--text);
+    white-space: nowrap;
+    pointer-events: none;
+    z-index: 200;
+  }
+
+  @media (max-width: 600px) {
+    nav { padding: 0.8rem 1.2rem; }
+    .hero { padding: 4rem 1.2rem 3rem; }
+    .grid { padding: 0 1.2rem; }
+    .filter-wrap, .section-label, .progress-section { padding: 0 1.2rem; }
+    .assignment-section { padding: 0 1.2rem; }
+    .assignment-header { padding: 1.5rem; flex-direction: column; align-items: flex-start; }
+    .assignment-body { padding: 1.5rem; }
+    .link-row { flex-direction: column; align-items: flex-start; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="logo">Digital Fab Lab</div>
+  <a href="index.html">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+    Back to Portfolio
+  </a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-badge">Module Complete</div>
+  <h1><span>UI/UX</span></h1>
+  <p class="hero-sub">A 5-day deep dive into Figma and UI/UX fundamentals at Digital Fab Lab.</p>
+  <div class="stats">
+    <div class="stat-card" data-tooltip="Duration of module">
+      <h2>5</h2><p>Days</p>
+    </div>
+    <div class="stat-card" data-tooltip="Figma + UI/UX">
+      <h2>2</h2><p>Technologies</p>
+    </div>
+    <div class="stat-card" data-tooltip="Skills acquired">
+      <h2>100%</h2><p>Completion</p>
+    </div>
+  </div>
+</section>
+
+<!-- PROGRESS -->
+<div class="progress-section">
+  <div class="progress-bar-wrap">
+    <div class="progress-bar-fill" id="prog-bar"></div>
+  </div>
+  <div class="progress-meta">
+    <span>Module progress</span>
+    <span id="prog-label">0 / 5</span>
+  </div>
+</div>
+
+<!-- FILTER -->
+<div class="filter-wrap">
+  <button class="filter-btn active" data-filter="all">All Days</button>
+</div>
+
+<!-- SECTION LABEL -->
+<div class="section-label">
+  <h2>Learning Journey</h2>
+  <div class="line"></div>
+</div>
+
+<!-- GRID — click images to open lightbox -->
+<div class="grid" id="card-grid">
+
+  <div class="day-card" data-filter="figma" data-day="1">
+    <div class="card-top" onclick="openLightbox('images/day-1-UI.png','Day 01 — Understanding the basics of Figma')">
+      <img src="images/day-1-UI.png" alt="Day 1" onerror="this.style.display='none';this.parentElement.querySelector('.card-placeholder').style.display='flex'">
+      <div class="card-placeholder" style="display:none;">day1.png</div>
+      <div class="day-num">Day 01</div>
+      <div class="zoom-hint"><span>🔍 View Image</span></div>
+    </div>
+    <div class="card-body">
+      <h4>Understanding the basics of Figma</h4>
+      <p>How to generate vectors in Figma, why Figma rasterises, interface panels, move tool, shape tool, design responsiveness and adaptation differences.</p>
+      <div class="status-dot"></div>
+    </div>
+  </div>
+
+  <div class="day-card" data-filter="figma" data-day="2">
+    <div class="card-top" onclick="openLightbox('images/day-2-UI.png','Day 02 — Creation of Components')">
+      <img src="images/day-2-UI.png" alt="Day 2" onerror="this.style.display='none';this.parentElement.querySelector('.card-placeholder').style.display='flex'">
+      <div class="card-placeholder" style="display:none;">day2.png</div>
+      <div class="day-num">Day 02</div>
+      <div class="zoom-hint"><span>🔍 View Image</span></div>
+    </div>
+    <div class="card-body">
+      <h4>Creation of Components</h4>
+      <p>Components and instances difference. Selection of frames and how to use Auto Layout effectively.</p>
+      <div class="status-dot"></div>
+    </div>
+  </div>
+
+  <div class="day-card" data-filter="figma" data-day="3">
+    <div class="card-top" onclick="openLightbox('images/daay-3-UI.png','Day 03 — Font and Dimensions')">
+      <img src="images/daay-3-UI.png" alt="Day 3" onerror="this.style.display='none';this.parentElement.querySelector('.card-placeholder').style.display='flex'">
+      <div class="card-placeholder" style="display:none;">daay-3-UI.png</div>
+      <div class="day-num">Day 03</div>
+      <div class="zoom-hint"><span>🔍 View Image</span></div>
+    </div>
+    <div class="card-body">
+      <h4>RED BULL project start
+        <br>Font and Dimensions</h4>
+      <p>UI design for branding Showcase<br>
+        Learning dimensions and extracting the Satoshi font in Figma for consistent typography across designs.</p>
+      <div class="status-dot"></div>
+    </div>
+  </div>
+
+  <div class="day-card" data-filter="figma" data-day="4">
+    <div class="card-top" onclick="openLightbox('images/day-4-UI.png','Day 04 — Red Bull Project')">
+      <img src="images/day-4-UI.png" alt="Day 4" onerror="this.style.display='none';this.parentElement.querySelector('.card-placeholder').style.display='flex'">
+      <div class="card-placeholder" style="display:none;">day-4-UI.png</div>
+      <div class="day-num">Day 04</div>
+      <div class="zoom-hint"><span>🔍 View Image</span></div>
+    </div>
+    <div class="card-body">
+      <h4>Completion of Red Bull Project</h4>
+      <p>Completed the project given by mentors as an assignment, applying all learned skills under their guidance.</p>
+      <div class="status-dot"></div>
+    </div>
+  </div>
+
+  <div class="day-card" data-filter="uiux" data-day="5">
+    <div class="card-top" onclick="openLightbox('images/day-5-UI.png','Day 05 — Case Study')">
+      <img src="images/day-5-UI.png" alt="Day 5" onerror="this.style.display='none';this.parentElement.querySelector('.card-placeholder').style.display='flex'">
+      <div class="card-placeholder" style="display:none;">day-5-UI.png</div>
+      <div class="day-num">Day 05</div>
+      <div class="zoom-hint"><span>🔍 View Image</span></div>
+    </div>
+    <div class="card-body">
+      <h4>Case Study</h4>
+      <p>Understanding different UI/UX case studies and learning the glassmorphism effect in Figma.</p>
+      <div class="status-dot"></div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ── IMAGE LIGHTBOX ── -->
+<div class="lightbox" id="lightbox" onclick="handleLightboxClick(event)">
+  <div class="lightbox-inner" id="lightbox-inner">
+    <button class="lightbox-close" onclick="closeLightbox()">×</button>
+    <img id="lightbox-img" src="" alt="Assignment image">
+    <div class="lightbox-caption" id="lightbox-caption"></div>
+  </div>
+</div>
+
+<!-- ── SINGLE ASSIGNMENT SECTION ── -->
+<div class="section-label" style="margin-top:1rem;">
+  <h2>Module Assignment</h2>
+  <div class="line"></div>
+</div>
+
+<div class="assignment-section">
+  <div class="assignment-card">
+    <div class="assignment-header">
+      <div class="assignment-icon">🎨</div>
+      <div class="assignment-header-text">
+        <h3>UI/UX Module — Final Project</h3>
+        <p>Submitted at the end of the 5-day Figma &amp; UI/UX module · Digital Fab Lab 2026</p>
+      </div>
+    </div>
+    <div class="assignment-body">
+      <p class="assignment-desc">
+        The final assignment for this module involved designing a complete UI screen (or multi-screen flow) using Figma, applying all concepts covered — components, auto layout, typography, and visual hierarchy. The project was reviewed by mentors and assessed for design quality, consistency, and responsiveness.
+      </p>
+
+      <div class="project-link-block">
+        <label>🔗 Project Links</label>
+        <div class="link-row">
+
+          <!-- 
+            ✏️  HOW TO ADD YOUR LINKS:
+            Replace the href="#" values below with your actual URLs.
+            E.g. href="https://www.figma.com/file/your-file-id/..."
+                 href="https://www.behance.net/your-project"
+            Remove the "placeholder" class once you add a real link.
+          -->
+
+          <a href="https://www.figma.com/design/cQId6tGOzIdf8E2EuBGsgB/Untitled?node-id=7-170&t=Aw7IuV6t0yo2AqL9-1" >
+            <svg viewBox="0 0 24 24"><path d="M5 5.5A3.5 3.5 0 0 1 8.5 2H12v7H8.5A3.5 3.5 0 0 1 5 5.5z"/><path d="M12 2h3.5a3.5 3.5 0 1 1 0 7H12V2z"/><path d="M12 12.5a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0z"/><path d="M5 19.5A3.5 3.5 0 0 1 8.5 16H12v3.5a3.5 3.5 0 0 1-7 0z"/><path d="M5 12.5A3.5 3.5 0 0 1 8.5 9H12v7H8.5A3.5 3.5 0 0 1 5 12.5z"/></svg>
+            Red Bull UI Design Showcase
+          </a>
+
+
+          <a href="https://www.figma.com/design/ofJB7bgeXwP6FiCa8GBp7Q/CHEETOS?node-id=0-1&t=2Az0PRqLcSd9wMYq-1" >
+            <svg viewBox="0 0 24 24"><path d="M5 5.5A3.5 3.5 0 0 1 8.5 2H12v7H8.5A3.5 3.5 0 0 1 5 5.5z"/><path d="M12 2h3.5a3.5 3.5 0 1 1 0 7H12V2z"/><path d="M12 12.5a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0z"/><path d="M5 19.5A3.5 3.5 0 0 1 8.5 16H12v3.5a3.5 3.5 0 0 1-7 0z"/><path d="M5 12.5A3.5 3.5 0 0 1 8.5 9H12v7H8.5A3.5 3.5 0 0 1 5 12.5z"/></svg>
+            CHEETOS UI Design Showcase 
+          </a>
+
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+
+      <div class="assignment-tags">
+        <span class="a-tag">Figma</span>
+        <span class="a-tag">UI Design</span>
+        <span class="a-tag">Auto Layout</span>
+        <span class="a-tag">Components</span>
+        <span class="a-tag">Typography</span>
+        <span class="a-tag">Glassmorphism</span>
+        <span class="a-tag">Case Study</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <span>Digital Fab Lab · UI/UX Module · 2026</span>
+</footer>
+
+<script>
+  // ── PROGRESS BAR ──
+  window.addEventListener('load', () => {
+    setTimeout(() => {
+      document.getElementById('prog-bar').style.width = '100%';
+      document.getElementById('prog-label').textContent = '5 / 5';
+    }, 600);
+  });
+
+  // ── FILTER BUTTONS ──
+  document.querySelectorAll('.filter-btn').forEach(btn => {
+    btn.addEventListener('click', function () {
+      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      this.classList.add('active');
+      const f = this.dataset.filter;
+      document.querySelectorAll('.day-card').forEach(card => {
+        if (f === 'all' || card.dataset.filter === f) {
+          card.style.display = '';
+          card.style.animation = 'fadeUp 0.4s ease both';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    });
+  });
+
+  // ── LIGHTBOX ──
+  function openLightbox(src, caption) {
+    const lb = document.getElementById('lightbox');
+    const img = document.getElementById('lightbox-img');
+    const cap = document.getElementById('lightbox-caption');
+    img.src = src;
+    cap.textContent = caption;
+    lb.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeLightbox() {
+    document.getElementById('lightbox').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  function handleLightboxClick(e) {
+    if (e.target === document.getElementById('lightbox')) closeLightbox();
+  }
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') closeLightbox();
+  });
+</script>
+</body>
+</html>
