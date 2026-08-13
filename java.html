@@ -746,6 +746,11 @@
     .assignment-body { padding: 1.5rem; }
     .link-row { flex-direction: column; align-items: flex-start; }
   }
+
+
+
+
+
 </style>
 </head>
 <body>
@@ -783,7 +788,7 @@
   </div>
   <div class="progress-meta">
     <span>Module progress</span>
-    <span id="prog-label">0 / 7</span>
+    <span id="prog-label"><span> 7 /   7</span>
   </div>
 </div>
 
@@ -927,64 +932,164 @@ Inspect.</p>
 
 </div>
 
-<!-- ── IMAGE LIGHTBOX ── -->
-<div class="lightbox" id="lightbox" onclick="handleLightboxClick(event)">
-  <div class="lightbox-inner" id="lightbox-inner">
-    <button class="lightbox-close" onclick="closeLightbox()">×</button>
-    <img id="lightbox-img" src="" alt="Assignment image">
-    <div class="lightbox-caption" id="lightbox-caption"></div>
-  </div>
-</div>
+<!-- ================= FABLAB PROJECT ================= -->
 
-<!-- ── SINGLE ASSIGNMENT SECTION ── -->
-<div class="section-label" style="margin-top:1rem;">
-  <h2>Module Assignment</h2>
-  <div class="line"></div>
-</div>
+<section class="java-project-section" id="fablab-project">
 
-<div class="assignment-section">
-  <div class="assignment-card">
-    <div class="assignment-header">
-      <div class="assignment-icon">🎨</div>
-      <div class="assignment-header-text">
-        <h3>FUSION-360 Module — Final Project</h3>
-        <p>Submitted at the end of the 7-day Fusion-360  · Digital Fab Lab 2026</p>
-      </div>
+    <div class="project-section-heading">
+        <span class="section-label">JAVA MODULE PROJECT</span>
+        <h2>FabLab Cost Optimizer</h2>
+        <p>
+            A JavaFX desktop application developed to estimate the basic
+            cost of a FabLab project based on material, machine time,
+            machine rate and additional expenses.
+        </p>
     </div>
-    <div class="assignment-body">
-      <p class="assignment-desc">
-        The final assignment for this module involved Designed and developed a precision-based robotic gripper capable of securely grasping and manipulating objects of varying shapes and sizes. The system integrates mechanical design, actuator control, and sensor-based feedback to ensure stability and accuracy. Built using CAD modeling and prototyping techniques, the gripper demonstrates efficient force distribution and adaptability for automation and industrial applications.
-      </p>
 
-      <div class="project-link-block">
-        <label>🔗 Project Links</label>
-        <div class="link-row">
+    <div class="java-project-card">
 
-          <!-- 
-            ✏️  HOW TO ADD YOUR LINKS:
-            Replace the href="#" values below with your actual URLs.
-            E.g. href="https://www.figma.com/file/your-file-id/..."
-                 href="https://www.behance.net/your-project"
-            Remove the "placeholder" class once you add a real link.
-          -->
-<a href="https://drive.google.com/file/d/13joh5t1RatJejsaNc8RkTcvLo2j7kDpO/view?usp=drive_link" download class="btn">
-Access Design File
+        <!-- Project Image -->
+        <div class="java-project-image">
+            <img 
+                src="Fab-lab-cost-optimizer.png"
+                alt="FabLab Cost Optimizer Application"
+            >
+        </div>
 
-</a>
+        <!-- Project Information -->
+        <div class="java-project-content">
 
+            <span class="project-tag">Java + JavaFX</span>
 
+            <h3>FabLab Cost Optimizer</h3>
 
+            <p class="project-description">
+                FabLab Cost Optimizer is a desktop application created
+                during the Java module of the Digital FabLab program.
+                It helps users quickly estimate the total cost of a
+                FabLab project by calculating material, machine and
+                additional costs.
+            </p>
 
+            <!-- Technologies -->
+            <div class="project-info-block">
+                <h4>Technologies Used</h4>
 
+                <div class="technology-tags">
+                    <span>Java</span>
+                    <span>JavaFX</span>
+                    <span>FXML</span>
+                    <span>CSS</span>
+                    <span>OOP</span>
+                </div>
+            </div>
 
+            <!-- Features -->
+            <div class="project-info-block">
+                <h4>Key Features</h4>
 
+                <ul class="project-features">
+                    <li>Material cost calculation</li>
+                    <li>Machine time and machine rate calculation</li>
+                    <li>Additional cost support</li>
+                    <li>Automatic estimated total calculation</li>
+                    <li>Simple and user-friendly JavaFX interface</li>
+                    <li>Cost recommendation based on project estimate</li>
+                </ul>
+            </div>
+
+            <!-- Project Buttons -->
+            <div class="project-buttons">
+
+                <a 
+                    href="https://github.com/aryannagare45/FabLab-Cost-Optimizer"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="project-btn github-btn"
+                >
+                    View on GitHub ↗
+                </a>
+
+                <a 
+                    href="#project-details"
+                    class="project-btn details-btn"
+                >
+                    View Details ↓
+                </a>
+
+            </div>
 
         </div>
-      </div>
+    </div>
+
+    <!-- Project Details -->
+    <div class="project-details" id="project-details">
+
+        <div class="project-detail-box">
+
+            <span class="section-label">PROJECT OVERVIEW</span>
+
+            <h3>How the application works</h3>
+
+            <p>
+                The user enters the material cost per piece, number of
+                pieces, machine operating time, machine rate per minute
+                and other expenses. The application then calculates
+                the material cost, machine cost and estimated total
+                project cost automatically.
+            </p>
+
+        </div>
+
+        <div class="project-detail-box">
+
+            <span class="section-label">CALCULATION</span>
+
+            <h3>Cost Estimation</h3>
+
+            <div class="calculation-box">
+
+                <p>
+                    <strong>Material Cost</strong>
+                    = Material Cost per Piece × Number of Pieces
+                </p>
+
+                <p>
+                    <strong>Machine Cost</strong>
+                    = Machine Time × Machine Rate per Minute
+                </p>
+
+                <p>
+                    <strong>Total Cost</strong>
+                    = Material Cost + Machine Cost + Other Cost
+                </p>
+
+            </div>
+
+        </div>
+
+        <div class="project-detail-box">
+
+            <span class="section-label">LEARNING OUTCOME</span>
+
+            <h3>What I Learned</h3>
+
+            <p>
+                Through this project, I applied Java programming concepts
+                such as classes, objects, methods, encapsulation and
+                event handling. I also learned how JavaFX, FXML and CSS
+                can be combined to create a functional desktop GUI.
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
 
 
 <footer>
-  <span>Digital Fab Lab · FUSION-360 · 2026</span>
+  <span>Digital Fab Lab · JAVA · 2026</span>
 </footer>
 
 <script>
