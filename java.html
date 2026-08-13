@@ -747,7 +747,260 @@
     .link-row { flex-direction: column; align-items: flex-start; }
   }
 
+/* =========================================
+   FABLAB JAVA PROJECT
+========================================= */
 
+.java-project-section {
+    width: 90%;
+    max-width: 1150px;
+    margin: 100px auto;
+}
+
+.project-section-heading {
+    text-align: center;
+    margin-bottom: 45px;
+}
+
+.section-label {
+    display: inline-block;
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    opacity: 0.7;
+    margin-bottom: 10px;
+}
+
+.project-section-heading h2 {
+    font-size: 2.5rem;
+    margin: 10px 0;
+}
+
+.project-section-heading p {
+    max-width: 700px;
+    margin: 0 auto;
+    line-height: 1.7;
+    opacity: 0.75;
+}
+
+
+/* Main Project Card */
+
+.java-project-card {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    padding: 30px;
+    border-radius: 24px;
+    border: 1px solid rgba(128, 128, 128, 0.25);
+    background: rgba(255, 255, 255, 0.04);
+    backdrop-filter: blur(12px);
+    overflow: hidden;
+}
+
+
+/* Project Image */
+
+.java-project-image {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.java-project-image img {
+    width: 100%;
+    max-height: 430px;
+    object-fit: contain;
+    border-radius: 16px;
+    border: 1px solid rgba(128, 128, 128, 0.25);
+    transition: transform 0.3s ease;
+}
+
+.java-project-image img:hover {
+    transform: scale(1.02);
+}
+
+
+/* Project Content */
+
+.java-project-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.project-tag {
+    display: inline-block;
+    width: fit-content;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    background: rgba(100, 100, 100, 0.15);
+    margin-bottom: 15px;
+}
+
+.java-project-content h3 {
+    font-size: 2rem;
+    margin: 5px 0 15px;
+}
+
+.project-description {
+    line-height: 1.7;
+    opacity: 0.8;
+}
+
+
+/* Information Blocks */
+
+.project-info-block {
+    margin-top: 20px;
+}
+
+.project-info-block h4 {
+    margin-bottom: 10px;
+}
+
+
+/* Technology Tags */
+
+.technology-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.technology-tags span {
+    padding: 7px 12px;
+    border-radius: 8px;
+    font-size: 0.8rem;
+    border: 1px solid rgba(128, 128, 128, 0.3);
+}
+
+
+/* Features */
+
+.project-features {
+    padding-left: 20px;
+    line-height: 1.8;
+    opacity: 0.8;
+}
+
+
+/* Buttons */
+
+.project-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 25px;
+}
+
+.project-btn {
+    display: inline-block;
+    padding: 11px 18px;
+    border-radius: 10px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.project-btn:hover {
+    transform: translateY(-2px);
+    opacity: 0.85;
+}
+
+.github-btn {
+    background: #222;
+    color: white;
+}
+
+.details-btn {
+    border: 1px solid rgba(128, 128, 128, 0.4);
+    color: inherit;
+}
+
+
+/* Project Details */
+
+.project-details {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    margin-top: 30px;
+}
+
+.project-detail-box {
+    padding: 25px;
+    border-radius: 18px;
+    border: 1px solid rgba(128, 128, 128, 0.25);
+    background: rgba(255, 255, 255, 0.03);
+}
+
+.project-detail-box h3 {
+    margin: 8px 0 15px;
+}
+
+.project-detail-box p {
+    line-height: 1.7;
+    opacity: 0.8;
+}
+
+
+/* Calculation Box */
+
+.calculation-box {
+    line-height: 1.8;
+}
+
+.calculation-box p {
+    margin: 10px 0;
+}
+
+
+/* Responsive */
+
+@media (max-width: 850px) {
+
+    .java-project-card {
+        grid-template-columns: 1fr;
+    }
+
+    .project-details {
+        grid-template-columns: 1fr;
+    }
+
+    .project-section-heading h2 {
+        font-size: 2rem;
+    }
+
+}
+
+
+@media (max-width: 500px) {
+
+    .java-project-section {
+        width: 92%;
+    }
+
+    .java-project-card {
+        padding: 18px;
+    }
+
+    .java-project-content h3 {
+        font-size: 1.6rem;
+    }
+
+    .project-buttons {
+        flex-direction: column;
+    }
+
+    .project-btn {
+        text-align: center;
+    }
+
+}
 
 
 
