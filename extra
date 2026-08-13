@@ -1,0 +1,38 @@
+<div class="card">
+<h3>Languages</h3>
+<p>English, Hindi, Marathi</p>
+</div>
+
+</div>
+</section>
+
+<!-- MODULES -->
+<section id="modules">
+<h2 class="title">Learning Modules</h2>
+
+<div class="grid">
+
+<div class="module-card" onclick="openModule('web')">
+<h3>Web Development</h3>
+<p>HTML, CSS, JavaScript</p>
+</div>
+
+<div class="module-card" onclick="openModule('cad')">
+<h3>CAD Design</h3>
+<p>Design and modeling</p>
+</div>
+
+<div class="module-card" onclick="openModule('laser')">
+<h3>Laser Cutting</h3>
+<p>Fabrication techniques</p>
+</div>
+
+<div class="module-card" onclick="openModule('print')">
+<h3>3D Printing</h3>
+<p>Prototype building</p>
+</div>
+
+<div class="module-card" onclick="openModule('iot')">
+<h3>IoT & PCB</h3>
+<p>Electronics basics</p>
+</div>
